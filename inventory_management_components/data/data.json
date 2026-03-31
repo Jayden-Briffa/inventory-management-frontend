@@ -1,0 +1,28 @@
+{
+    "borrows": [
+        {
+            "id": 1,
+            "Item": "Item name",
+            "Borrowed_by": "someone@email.com",
+            "Status": "Returned",
+            "Borrow_Date": "01/01/2026",
+            "Expected_Return": "01/01/2026"
+        },
+        {
+            "id": 2,
+            "Item": "Item name",
+            "Borrowed_by": "someone@email.com",
+            "Status": "Returned",
+            "Borrow_Date": "01/01/2026",
+            "Expected_Return": "01/01/2026"
+        },
+        {
+            "id": 3,
+            "Item": "Item name",
+            "Borrowed_by": "someone@email.com",
+            "Status": "Returned",
+            "Borrow_Date": "01/01/2026",
+            "Expected_Return": "01/01/2026"
+        }
+    ]
+}

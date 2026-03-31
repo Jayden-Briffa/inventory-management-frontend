@@ -1,1 +1,65 @@
 @import './base.css';
+@import "tailwindcss";
+@import "primeicons/primeicons.css";
+
+:root {
+    --color-vf-red: #e60000;
+    --color-vf-grey: #4a4d4e;
+    --color-vf-purple-light: #9c2aa0;
+    --color-vf-purple-dark: #5e2750;
+    --color-vf-blue-light: #00b0ca;
+    --color-vf-blue-dark: #007c92;
+    --color-vf-black: black;
+    
+    /* Padding */
+    --PADDING-PAGE-TOPBOTTOM: 5vh;
+    --PADDING-PAGE-LEFTRIGHT: 10vw;
+
+    --PADDING-PAGE:  var(--PADDING-PAGE-TOPBOTTOM) var(--PADDING-PAGE-LEFTRIGHT);
+}
+
+/* FOR MOBILE DEVICES */
+@media only screen and (max-width: 767px){
+
+}
+
+/* FOR MOBILE AND TABLET DEVICES */
+@media only screen and (max-width: 1024px){
+    :root{
+        --PADDING-PAGE-LEFTRIGHT: 5vw;
+    }
+}
+
+/* FOR TABLET DEVICES */
+@media only screen and (min-width: 768px) and (max-width: 1023px){
+
+}
+
+/* FOR DESKTOP DEVICES */
+@media only screen and (min-width: 1024px){
+    :root{
+        --PADDING-NAV: 0 5vw;
+    }
+}
+
+button {
+    border-radius: 3px;
+    padding: 2px 4px;
+    font-weight: bold;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+button.bg-vf-red {
+    color: white;
+    border: 2px solid var(--color-vf-red)
+}
+
+button.bg-vf-red:hover {
+    color: black;
+    background-color: white;;
+}
+
+#page-view{
+  padding: var(--PADDING-PAGE);
+}

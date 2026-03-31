@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import Modal from '@/components/Modal.vue';
+import { ref } from 'vue';
+
+const showModal = ref(false);
 </script>
 
 <template>
-  <p>banana</p>
+  Nothing exists here
 </template>

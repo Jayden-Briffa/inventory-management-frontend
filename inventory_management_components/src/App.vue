@@ -3,14 +3,17 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <header>
-    <nav>
+  <header class="bg-vf-red text-white">
+    <nav class="flex justify-around">
       <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
+      <RouterLink to="/modal">Modal</RouterLink>
+      <RouterLink to="/table">Table</RouterLink>
     </nav>
   </header>
 
-  <RouterView />
+  <div id="page-view">
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
@@ -19,6 +22,5 @@ header {
   line-height: 1.5;
   max-height: 100vh;
   justify-self: left;
-  background-color: black;
 }
 </style>

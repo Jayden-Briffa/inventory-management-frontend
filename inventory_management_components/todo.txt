@@ -6,3 +6,4 @@ Search bar
 Modal
 Header
 Footer
+Loading
