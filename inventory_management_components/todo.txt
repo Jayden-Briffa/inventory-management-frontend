@@ -1,0 +1,8 @@
+Table
+Buttons
+Inputs
+Select option
+Search bar
+Modal
+Header
+Footer
