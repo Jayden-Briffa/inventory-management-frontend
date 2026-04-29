@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
-    "serve-json": "json-server --watch data/data.json --port 5000"
+    "serve-json": "json-server --watch data/data.json --port 5050"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",

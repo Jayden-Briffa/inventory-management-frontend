@@ -1,17 +1,34 @@
 <script setup>
 import Table from '@/components/Table.vue';
 import axios from 'axios';
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, watch, ref } from 'vue';
 
 const data = reactive({})
+const selectedObjects = ref([])
+
 onMounted(async () => {
     const response = await axios.get(`/api/borrows`)
     data.value = response.data
-    console.log("Data found in json:", data.value)
 })
+
+const editFunc = (obj) => {console.log(`Editing item #${obj.id}`)}
+const delFunc = (obj) => {console.log(`Deleting..`)}
+const otherFunc = (obj) => {}
+
+const handleToggleSelect = ({ obj, checked }) => {
+    const objIdx = selectedObjects.value.findIndex(o => o.id === obj.id)
+
+    if (checked && objIdx === -1) {
+        selectedObjects.value.push(obj)
+    } else if (!checked && objIdx !== -1) {
+        selectedObjects.value.splice(objIdx, 1)
+    }
+
+    console.log(selectedObjects.value)
+}
 
 </script>
 
 <template>
-    <Table :data="data.value" exclude-fields="id" />
+    <Table :data="data.value" exclude-fields="id" :editFunc :delFunc :selectedObjects="selectedObjects" @toggleSelect="handleToggleSelect" />
 </template>
