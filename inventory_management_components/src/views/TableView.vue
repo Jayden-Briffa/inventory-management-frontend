@@ -1,13 +1,12 @@
 <script setup>
 import Table from '@/components/Table.vue';
-import axios from 'axios';
 import { reactive, onMounted, watch, ref } from 'vue';
 
 const data = reactive({})
 const selectedObjects = ref([])
 
 onMounted(async () => {
-    const response = await axios.get(`/api/borrows`)
+    const response = await fetch(`/api/borrows`)
     data.value = response.data
 })
 
