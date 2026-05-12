@@ -1,18 +1,24 @@
 <script setup>
 import Table from '@/components/Table.vue';
-import { reactive, onMounted, watch, ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
-const data = reactive({})
+const data = ref([])
 const selectedObjects = ref([])
 
 onMounted(async () => {
-    const response = await fetch(`/api/borrows`)
-    data.value = response.data
+    const response = await fetch('/api/borrows')
+    data.value = await response.json()
 })
 
-const editFunc = (obj) => {console.log(`Editing item #${obj.id}`)}
-const delFunc = (obj) => {console.log(`Deleting..`)}
-const otherFunc = (obj) => {}
+const editFunc = (obj) => {
+    console.log(`Editing item #${obj.id}`)
+}
+
+const delFunc = (obj) => {
+    console.log(`Deleting..`)
+}
+
+const returnFunc = (obj) => {}
 
 const handleToggleSelect = ({ obj, checked }) => {
     const objIdx = selectedObjects.value.findIndex(o => o.id === obj.id)
@@ -25,9 +31,16 @@ const handleToggleSelect = ({ obj, checked }) => {
 
     console.log(selectedObjects.value)
 }
-
 </script>
 
 <template>
-    <Table :data="data.value" exclude-fields="id" :editFunc :delFunc :selectedObjects="selectedObjects" @toggleSelect="handleToggleSelect" />
+    <Table
+        :data="data"
+        :exclude-fields="['id']"
+        :editFunc="editFunc"
+        :delFunc="delFunc"
+        :returnFunc="returnFunc"
+        :selectedObjects="selectedObjects"
+        @toggleSelect="handleToggleSelect"
+    />
 </template>

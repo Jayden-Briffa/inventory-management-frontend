@@ -11,7 +11,7 @@
         {
             "id": 2,
             "Item": "Item name",
-            "Borrowed_by": "someone@email.com",
+            "Borrowed_by": "person@email.com",
             "Status": "Returned",
             "Borrow_Date": "01/01/2026",
             "Expected_Return": "01/01/2026"
@@ -19,7 +19,7 @@
         {
             "id": 3,
             "Item": "Item name",
-            "Borrowed_by": "someone@email.com",
+            "Borrowed_by": "longemailhere@email.com",
             "Status": "Returned",
             "Borrow_Date": "01/01/2026",
             "Expected_Return": "01/01/2026"
