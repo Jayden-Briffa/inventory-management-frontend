@@ -40,7 +40,7 @@ const emit = defineEmits(['update:show'])
 } */
 
 .modal-container {
-  --modal-width: 50vw;
+  --modal-width: 80vw;
 
   width: var(--modal-width);
   margin: 0px auto;

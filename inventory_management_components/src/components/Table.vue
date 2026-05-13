@@ -10,10 +10,13 @@ const props = defineProps({
         default: () => [],
     },
     includeFields: {
-        type: Array,
+        type: Array<String>,
         default: () => [],
     },
-    fieldAliases: Array<Record<string, string>>,
+    fieldAliases: {
+        type: Object,
+        default: () => {return {}}
+    },
     selectFunc: Function,
     editFunc: Function,
     delFunc: Function,
