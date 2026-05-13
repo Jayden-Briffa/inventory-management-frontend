@@ -6,9 +6,14 @@ const props = defineProps({
     id: String,
     data: Object,
     excludeFields: {
+        type: Array<String>,
+        default: () => [],
+    },
+    includeFields: {
         type: Array,
         default: () => [],
     },
+    fieldAliases: Array<Record<string, string>>,
     selectFunc: Function,
     editFunc: Function,
     delFunc: Function,
@@ -16,34 +21,41 @@ const props = defineProps({
 })
 const selectedObjects = ref([])
 
-const emit = defineEmits<{
-  (e: 'toggleSelect', payload: [obj: Object]): void
-}>()
 let fields: string[] = []
 
-const includedFields = computed(() =>
-  fields.filter(key => !props.excludeFields.includes(key))
-);
+const includedFields = computed(() => {
+    if (props.includeFields.length > 0){
+        return fields.filter(key => props.includeFields.includes(key))
+
+    } else if (props.excludeFields.length > 0) {
+        return fields.filter(key => !props.excludeFields.includes(key))
+    }
+    
+    return fields
+});
 
 const numOptFuncs = computed(() =>
   [props.editFunc, props.delFunc, props.returnFunc].filter(Boolean).length
 )
 
 const gridTemplateColumns = computed(() => {
-  const cols: string[] = []
-    
-  if (props.selectFunc) {
-    cols.push('minmax(3rem, auto)')
-  }
+    const selectColumnWidth = 'minmax(3rem, auto)'
+    const optsColumnWidth = `${numOptFuncs.value * 3}rem`
 
-  cols.push(...includedFields.value.map(() => '1fr'))
+    const cols: string[] = []
+        
+    if (props.selectFunc) {
+        cols.push(selectColumnWidth)
+    }
 
-  // Make size of options column adjust for number of options
-  if (numOptFuncs.value) {
-    cols.push(`${numOptFuncs.value * 3}rem`)
-  }
+    cols.push(...includedFields.value.map(() => '1fr'))
 
-  return cols.join(' ')
+    // Make size of options column adjust for number of options
+    if (numOptFuncs.value) {
+        cols.push(optsColumnWidth)
+    }
+
+    return cols.join(' ')
 })
 
 watch(
@@ -54,12 +66,6 @@ watch(
     }
   },
   { immediate: true, deep: true }
-)
-
-const totalColumns = computed(() => 
-    includedFields.value.length +
-    (numOptFuncs.value ? 1 : 0) + 
-    (props.selectFunc != null ? 1 : 0)
 )
 
 const isSelected = (obj: any) => {
@@ -96,6 +102,10 @@ onUpdated(() => {
 });
 
 const handleSelect = ({ obj, checked }) => {
+    if (!props.selectFunc) {
+        return
+    }
+
     const objIdx = selectedObjects.value.findIndex(o => o.id === obj.id)
 
     if (checked && objIdx === -1) {
@@ -112,18 +122,18 @@ const handleSelect = ({ obj, checked }) => {
 <template>
     <section v-if="fields.length !== 0" :id class="bg-white">
         <div class="border border-vf-red grid" :style="{ gridTemplateColumns: gridTemplateColumns }">
-            <p v-if="selectedObjects != null">Select</p>
+            <p v-if="selectFunc != null">Select</p>
             <p v-for="key of includedFields" 
             :key="`tableField${key}`" 
             class="truncate relative"
             :data-content="key"
-            :ref="el => setCellRef(el, 'header', key)">{{ key }}</p>
+            :ref="el => setCellRef(el, 'header', key)">{{ props.fieldAliases && key in props.fieldAliases ? props.fieldAliases[key] : key }}</p>
             <p v-if="numOptFuncs">Options</p>
         </div>
         <div class="border border-vf-red">
             <div v-for="obj of data" :key="obj.id" class="grid" :style="{ gridTemplateColumns: gridTemplateColumns }" :class="isSelected(obj) ? 'selected-row' : ''">
                 <input 
-                    v-if="selectedObjects != null" 
+                    v-if="selectFunc" 
                     type="checkbox" 
                     :checked="isSelected(obj)"
                     @change="handleSelect({ obj, checked: !isSelected(obj) })"

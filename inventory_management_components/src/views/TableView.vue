@@ -29,12 +29,23 @@ const selectFunc = (newSelectedObjects) => {
 </script>
 
 <template>
+    <h1> Full table </h1>
     <Table
+        id="fullDataTable"
         :data="data"
         :exclude-fields="['id']"
         :editFunc="editFunc"
         :delFunc="delFunc"
         :returnFunc="returnFunc"
         :selectFunc="selectFunc"
+    />
+    
+    <hr>
+    <h1> Email only table </h1>
+    <Table
+        id="emailOnlyTable"
+        :data="data"
+        :include-fields="['Borrowed_by']"
+        :fieldAliases="{'Borrowed_by': 'Email'}"
     />
 </template>
