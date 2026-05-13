@@ -7,16 +7,17 @@ const props = defineProps({
     data: Object,
     excludeFields: {
         type: Array,
-        default: [],
+        default: () => [],
     },
-    selectedObjects: Array,
+    selectFunc: Function,
     editFunc: Function,
     delFunc: Function,
     returnFunc: Function,
 })
+const selectedObjects = ref([])
 
 const emit = defineEmits<{
-  (e: 'toggleSelect', payload: { obj: any; checked: boolean }): void
+  (e: 'toggleSelect', payload: [obj: Object]): void
 }>()
 let fields: string[] = []
 
@@ -30,13 +31,14 @@ const numOptFuncs = computed(() =>
 
 const gridTemplateColumns = computed(() => {
   const cols: string[] = []
-
-  if (props.selectedObjects != null) {
+    
+  if (props.selectFunc) {
     cols.push('minmax(3rem, auto)')
   }
 
   cols.push(...includedFields.value.map(() => '1fr'))
 
+  // Make size of options column adjust for number of options
   if (numOptFuncs.value) {
     cols.push(`${numOptFuncs.value * 3}rem`)
   }
@@ -47,8 +49,7 @@ const gridTemplateColumns = computed(() => {
 watch(
   () => props.data,
   async (newData) => {
-    console.log('Data found after update:', newData)
-    if (newData != undefined) {
+    if (newData && newData.length > 0) {
       fields = Object.keys(newData[0])
     }
   },
@@ -58,11 +59,11 @@ watch(
 const totalColumns = computed(() => 
     includedFields.value.length +
     (numOptFuncs.value ? 1 : 0) + 
-    (props.selectedObjects != null ? 1 : 0)
+    (props.selectFunc != null ? 1 : 0)
 )
 
 const isSelected = (obj: any) => {
-    return props.selectedObjects?.some(o => o.id === obj.id)
+    return selectedObjects.value?.some(o => o.id === obj.id)
 }
 
 
@@ -94,6 +95,18 @@ onUpdated(() => {
   updateTruncation();
 });
 
+const handleSelect = ({ obj, checked }) => {
+    const objIdx = selectedObjects.value.findIndex(o => o.id === obj.id)
+
+    if (checked && objIdx === -1) {
+        selectedObjects.value.push(obj)
+    } else if (!checked && objIdx !== -1) {
+        selectedObjects.value.splice(objIdx, 1)
+    }
+
+    props.selectFunc(selectedObjects.value)
+}
+
 </script>
 <!-- Align field titles with values -->
 <template>
@@ -113,7 +126,7 @@ onUpdated(() => {
                     v-if="selectedObjects != null" 
                     type="checkbox" 
                     :checked="isSelected(obj)"
-                    @change="emit('toggleSelect', { obj, checked: !isSelected(obj) })"
+                    @change="handleSelect({ obj, checked: !isSelected(obj) })"
                 />
                 <!-- Row data -->
                 <p
