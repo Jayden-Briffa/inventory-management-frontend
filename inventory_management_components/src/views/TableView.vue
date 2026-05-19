@@ -26,6 +26,11 @@ const selectFunc = (newSelectedObjects) => {
     selectedObjects.value = newSelectedObjects
     console.log("Selected objects:", selectedObjects.value)
 }
+
+const clickRow = (row) => {
+    console.log("Row clicked:", row)
+}
+
 </script>
 
 <template>
@@ -38,6 +43,7 @@ const selectFunc = (newSelectedObjects) => {
         :delFunc="delFunc"
         :returnFunc="returnFunc"
         :selectFunc="selectFunc"
+        @clickRow="clickRow"
     />
     
     <hr>
@@ -47,5 +53,6 @@ const selectFunc = (newSelectedObjects) => {
         :data="data"
         :include-fields="['Borrowed_by']"
         :fieldAliases="{'Borrowed_by': 'Email'}"
+        hideFields
     />
 </template>

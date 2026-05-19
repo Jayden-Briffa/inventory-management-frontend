@@ -17,11 +17,16 @@ const props = defineProps({
         type: Object,
         default: () => {return {}}
     },
+    hideFields: {
+        type: Boolean,
+        default: false,
+    },
     selectFunc: Function,
     editFunc: Function,
     delFunc: Function,
     returnFunc: Function,
 })
+const emit = defineEmits(['clickRow'])
 const selectedObjects = ref([])
 
 let fields: string[] = []
@@ -75,7 +80,6 @@ const isSelected = (obj: any) => {
     return selectedObjects.value?.some(o => o.id === obj.id)
 }
 
-
 // Dynamic cell truncation tracking
 const cellRefs = ref<Record<string, HTMLElement>>({})
 
@@ -124,7 +128,7 @@ const handleSelect = ({ obj, checked }) => {
 <!-- Align field titles with values -->
 <template>
     <section v-if="fields.length !== 0" :id class="bg-white">
-        <div class="border border-vf-red grid" :style="{ gridTemplateColumns: gridTemplateColumns }">
+        <div v-if="!hideFields" class="border border-vf-red grid" :style="{ gridTemplateColumns: gridTemplateColumns }">
             <p v-if="selectFunc != null">Select</p>
             <p v-for="key of includedFields" 
             :key="`tableField${key}`" 
@@ -134,7 +138,7 @@ const handleSelect = ({ obj, checked }) => {
             <p v-if="numOptFuncs">Options</p>
         </div>
         <div class="border border-vf-red">
-            <div v-for="obj of data" :key="obj.id" class="grid" :style="{ gridTemplateColumns: gridTemplateColumns }" :class="isSelected(obj) ? 'selected-row' : ''">
+            <div v-for="obj of data" :key="obj.id" class="grid" @click="$emit('clickRow', obj)" :style="{ gridTemplateColumns: gridTemplateColumns }" :class="isSelected(obj) ? 'selected-row' : ''">
                 <input 
                     v-if="selectFunc" 
                     type="checkbox" 
