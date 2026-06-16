@@ -17,7 +17,9 @@ const emit = defineEmits(['update:show'])
         <h3 class="text-center text-3xl">{{  title  }}</h3>
       </div>
       
-      <slot />
+      <div>
+        <slot />
+      </div>
     </section>
 </template>
 
