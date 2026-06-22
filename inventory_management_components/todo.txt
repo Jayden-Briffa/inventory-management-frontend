@@ -1,7 +1,7 @@
 Table
 Buttons
 Inputs
-Select option
+Select filters
 Search bar
 Modal
 Header
