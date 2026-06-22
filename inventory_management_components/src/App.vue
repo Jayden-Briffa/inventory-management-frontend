@@ -8,6 +8,7 @@ import { RouterLink, RouterView } from 'vue-router'
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/modal">Modal</RouterLink>
       <RouterLink to="/table">Table</RouterLink>
+      <RouterLink to="/passwordModal">Password modal</RouterLink>
     </nav>
   </header>
 
