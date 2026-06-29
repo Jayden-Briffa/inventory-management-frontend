@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Modal from '@/components/Modal.vue';
-import { ref, computed, type Ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps<{
   enterHandler: Function;

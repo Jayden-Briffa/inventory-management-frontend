@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import ModalView from '@/views/ModalView.vue'
 import TableView from '@/views/TableView.vue'
 import PasswordModalVIew from '@/views/PasswordModalVIew.vue'
+import ToastView from '@/views/ToastView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,11 @@ const router = createRouter({
       path: '/passwordModal',
       name: 'passwordModal',
       component: PasswordModalVIew
+    },
+    {
+      path: '/toast',
+      name: 'toast',
+      component: ToastView
     }
   ],
 })

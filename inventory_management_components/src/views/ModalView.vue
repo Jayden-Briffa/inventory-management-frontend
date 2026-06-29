@@ -13,6 +13,4 @@ const showModal = ref(false);
   <Modal id="my-modal" title="My Modal!" v-model:show="showModal">
     <p>apples!</p>
   </Modal>
-
-  
 </template>
