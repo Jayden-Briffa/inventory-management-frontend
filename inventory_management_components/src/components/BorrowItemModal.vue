@@ -6,6 +6,7 @@ const props = defineProps<{
     item: object,
     show: boolean
 }>()
+
 const emit = defineEmits<{ 
     (e: 'update:show', value: boolean): void
     (e: 'borrow-item'): void
@@ -20,10 +21,20 @@ const show = computed<boolean>({
 </script>
 
 <template>
-    <Modal id="borrow-item-modal" title="Borrow Item" v-model:show="show">
-        <p>{{ item.description }}</p>
-        <input type="date">
+    <Modal v-if="item != undefined" id="borrow-item-modal" :title="'Borrow item: ' + item.name" v-model:show="show">
+        <div class="mt-4" />
 
-        <button @click=emit("borrow-item")>Borrow</button>
+        <div class="flex flex-col items-center w-1/2 justify-self-center">
+            <p>{{ item.description }}</p>
+            
+            <form class="self-center mt-3 p-2 border border-vf-red rounded" id="user-borrow-form">
+                <div class="justify-items-center m-4">
+                    <label id="expected-return-input" class="block font-bold mb-1 text-2xl">Expected Return Date: </label>
+                    <input type="date" class="bg-gray-200 border border-vf-grey rounded font-bold block p-4 text-2xl" id="expected-return-input">
+                </div>
+                
+                <button @click="(event) => {emit('borrow-item'); event.preventDefault()}" class="block bg-vf-red w-full">Borrow</button>
+            </form>
+        </div>
     </Modal>
 </template>

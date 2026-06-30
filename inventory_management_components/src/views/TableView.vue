@@ -3,13 +3,18 @@ import BorrowItemModal from '@/components/BorrowItemModal.vue';
 import Table from '@/components/Table.vue';
 import { ref, onMounted } from 'vue';
 
-const data = ref([])
+const borrowData = ref([])
+const itemData = ref([])
 const selectedObjects = ref([])
 const showBorrowItemModal = ref(false)
 
 onMounted(async () => {
-    const response = await fetch('/api/borrows')
-    data.value = await response.json()
+    let response = await fetch('/api/borrows')
+    borrowData.value = await response.json()
+    
+    response = await fetch('/api/items')
+    itemData.value = await response.json()
+    console.log("ITEMS:", itemData.value) 
 })
 
 const editFunc = (obj) => {
@@ -39,12 +44,12 @@ const clickRow = (row) => {
     <button class="bg-vf-red text-white px-4 py-2 rounded" @click="showBorrowItemModal = true">
         Show Borrow Item Modal
     </button>
-    <BorrowItemModal :item="data[0]" />
+    <BorrowItemModal :v-if="itemData[0] != undefined" :item="itemData[0]" v-model:show="showBorrowItemModal" />
 
     <h1> Full table </h1>
     <Table
         id="fullDataTable"
-        :data="data"
+        :data="borrowData"
         :exclude-fields="['id']"
         :editFunc="editFunc"
         :delFunc="delFunc"
@@ -57,7 +62,7 @@ const clickRow = (row) => {
     <h1> Email only table </h1>
     <Table
         id="emailOnlyTable"
-        :data="data"
+        :data="borrowData"
         :include-fields="['Borrowed_by']"
         :fieldAliases="{'Borrowed_by': 'Email'}"
         hideFields
