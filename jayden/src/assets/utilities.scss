@@ -1,0 +1,28 @@
+$vf-colors: (
+  "vf-red": #e60000,
+  "vf-grey": #4a4d4e,
+  "vf-purple-light": #9c2aa0,
+  "vf-purple-dark": #5e2750,
+  "vf-blue-light": #00b0ca,
+  "vf-blue-dark": #007c92,
+  "vf-black": black
+);
+
+// Generate bg, text, border, and hover classes for each color
+@each $name, $color in $vf-colors {
+  .bg-#{$name} { background-color: $color; }
+  .text-#{$name} { color: $color; }
+  .border-#{$name} { border-color: $color; }
+
+  .hover\:bg-#{$name}:hover {
+    background-color: $color;
+  }
+
+  .hover\:text-#{$name}:hover {
+    color: $color;
+  }
+
+  .hover\:border-#{$name}:hover {
+    border-color: $color;
+  }
+}

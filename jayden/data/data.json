@@ -1,0 +1,58 @@
+{
+    "borrows": [
+        {
+            "id": 1,
+            "Item": "Item name",
+            "Borrowed_by": "someone@email.com",
+            "Status": "Returned",
+            "Borrow_Date": "01/01/2026",
+            "Expected_Return": "01/01/2026"
+        },
+        {
+            "id": 2,
+            "Item": "Item name",
+            "Borrowed_by": "person@email.com",
+            "Status": "Returned",
+            "Borrow_Date": "01/01/2026",
+            "Expected_Return": "01/01/2026"
+        },
+        {
+            "id": 3,
+            "Item": "Item name",
+            "Borrowed_by": "longemailhere@email.com",
+            "Status": "Returned",
+            "Borrow_Date": "01/01/2026",
+            "Expected_Return": "01/01/2026"
+        }
+    ],
+    "items": [
+        {
+            "itemId": 1,
+            "qrCode": "QR10001",
+            "name": "Projector",
+            "description": "Portable presentation projector for meetings.",
+            "isCollection": false
+        },
+        {
+            "itemId": 2,
+            "qrCode": "QR10002",
+            "name": "Laptop",
+            "description": "Thin-and-light laptop for staff use.",
+            "isCollection": false
+        },
+        {
+            "itemId": 3,
+            "qrCode": "QR10003",
+            "name": "Camera Kit",
+            "description": "DSLR camera kit with lenses and accessories.",
+            "isCollection": true
+        },
+        {
+            "itemId": 4,
+            "qrCode": "QR10004",
+            "name": "Conference Tablet",
+            "description": "Tablet used for conference room scheduling.",
+            "isCollection": false
+        }
+    ]
+}
