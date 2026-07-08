@@ -1,3 +1,0 @@
-<template>
-    SPINNER HERE
-</template>

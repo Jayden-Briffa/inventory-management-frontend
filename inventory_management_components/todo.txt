@@ -1,9 +1,0 @@
-Table
-Buttons
-Inputs
-Select filters
-Search bar
-Modal
-Header
-Footer
-Loading
