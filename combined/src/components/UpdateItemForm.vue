@@ -14,7 +14,7 @@
 <script setup lang="ts">
 // Should create standalone 'form' component from which to create borrow/item variants
 
-import { updateItem } from '@/apis/itemMethods';
+import { updateItem } from '@/apis/itemMethods.js';
 import { reactive, watch } from 'vue';
 
 type ItemUpdateInput = {
