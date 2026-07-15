@@ -8,3 +8,10 @@
   - references to source branch provenance
   - references to components being "retrieved"
 - Updated run instructions and component notes to use product-facing language.
+
+## 2026-07-15 (homepage docs)
+
+- Updated `combined/docs/components.md` with application-level navigation/view documentation:
+  - Root app shell responsibilities
+  - Router responsibilities
+  - Home, Borrow, and Admin view roles
