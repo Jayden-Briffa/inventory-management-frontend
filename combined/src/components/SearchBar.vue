@@ -4,21 +4,26 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 import { ref } from 'vue';
 
-const props = defineProps({
-    placeholder: String
+withDefaults(defineProps<{
+    placeholder?: string
+}>(), {
+    placeholder: '',
 })
 
-const searchInput = ref("")
+const searchInput = ref('')
 
-const emit = defineEmits(['update:input'])
+const emit = defineEmits<{
+    (e: 'update:input', value: string): void
+}>()
 
-function onUserInput(e) {
-    searchInput.value = e.target.value;
-    emit('update:input', searchInput.value)
+function onUserInput(e: Event) {
+        const target = e.target as HTMLInputElement | null
+        searchInput.value = target?.value ?? ''
+        emit('update:input', searchInput.value)
 }
 
 </script>

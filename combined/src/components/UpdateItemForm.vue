@@ -11,17 +11,26 @@
 </template>
 
 
-<script setup>
+<script setup lang="ts">
 // Should create standalone 'form' component from which to create borrow/item variants
 
 import { updateItem } from '@/apis/itemMethods.js';
 import { reactive, watch } from 'vue';
 
-const emit = defineEmits(['update'])
+type ItemUpdateInput = {
+  qrCode: string
+  name: string
+  description: string
+  isCollection: boolean
+}
 
-const props = defineProps({
-    item: Object,
-})
+const emit = defineEmits<{
+  (e: 'update'): void
+}>()
+
+const props = defineProps<{
+  item?: Partial<ItemUpdateInput>
+}>()
 
 const form = reactive({
     qrCode: '',
@@ -31,7 +40,11 @@ const form = reactive({
 })
 
 const updateItemFromForm = async () => {
-    let itemDetails = {name: form.itemName, description: form.itemDescription, isCollection: form.itemIsCollection};
+    if (!form.qrCode) {
+      return
+    }
+
+    const itemDetails = {name: form.itemName, description: form.itemDescription, isCollection: form.itemIsCollection};
     try {
       await updateItem(form.qrCode, itemDetails)
       emit('update')
@@ -43,12 +56,12 @@ const updateItemFromForm = async () => {
 
 watch (
   () => props.item,
-  (newItem) => {
+  (newItem?: Partial<ItemUpdateInput>) => {
     if (newItem) {
-      form.qrCode = newItem.qrCode
-      form.itemName = newItem.name
-      form.itemDescription = newItem.description
-      form.itemIsCollection = newItem.isCollection
+      form.qrCode = newItem.qrCode ?? ''
+      form.itemName = newItem.name ?? ''
+      form.itemDescription = newItem.description ?? ''
+      form.itemIsCollection = newItem.isCollection ?? false
     }
   },
   { immediate: true } 

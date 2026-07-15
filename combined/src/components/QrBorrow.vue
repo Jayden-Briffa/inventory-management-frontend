@@ -20,7 +20,7 @@
       </div>
       <p v-else>This item is currently borrowed and not available.</p>
     </div> 
-    <button @click="$emit('scanAgain')">Scan Again</button>
+    <button @click="emit('scanAgain')">Scan Again</button>
 
   </div>
 </template>
@@ -35,7 +35,9 @@ const props = defineProps<{
   userEmail?: string
 }>()
 
-defineEmits(['scanAgain'])
+const emit = defineEmits<{
+  (e: 'scanAgain'): void
+}>()
 
 const item = ref<Item | null>(null)
 const expectedReturnDate = ref<string | null>(null)

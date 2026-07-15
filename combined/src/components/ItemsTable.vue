@@ -1,18 +1,22 @@
-<script setup>
+<script setup lang="ts">
 import Table from '@/components/Table.vue';
 import Modal from '@/components/Modal.vue';
 import SearchBar from './SearchBar.vue';
-import { reactive, onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { getItems, deleteItem } from '@/apis/itemMethods.js';
 import UpdateItemForm from '@/components/UpdateItemForm.vue';
+import type { Item } from '@/services/inventory';
 
-const data = reactive({})
+type TableItem = Item & Record<string, unknown>
+type TogglePayload = { obj: TableItem; checked: boolean }
+
+const data = ref<TableItem[]>([])
 const searchQuery = ref('')
-const selectedObjects = ref([])
+const selectedObjects = ref<TableItem[]>([])
 const isEditModalOpen = ref(false)
-const objectToEdit = ref({})
+const objectToEdit = ref<TableItem | undefined>(undefined)
 
-const filteredItems = computed(() => {
+const filteredItems = computed<TableItem[]>(() => {
   // Filtering based on search query
   const query = searchQuery.value.trim().toLowerCase()
   if (!query) {
@@ -28,18 +32,18 @@ const filteredItems = computed(() => {
 
 
 const refreshList = async () => {
-    data.value = await getItems()
+  data.value = ((await getItems()) ?? []) as TableItem[]
 }
 
 onMounted(async () => {
     await refreshList()
 })
 
-const editFunc = (obj) => {console.log(`Editing item #${obj.itemId}`); objectToEdit.value = obj; openModal()}
-const delFunc = async (obj) => { await deleteItem(obj.qrCode); await refreshList() }
+const editFunc = (obj: TableItem) => {console.log(`Editing item #${obj.itemId}`); objectToEdit.value = obj; openModal()}
+const delFunc = async (obj: TableItem) => { await deleteItem(obj.qrCode); await refreshList() }
 
-const handleToggleSelect = ({ obj, checked }) => {
-    const objIdx = selectedObjects.value.findIndex(o => o.id === obj)
+const handleToggleSelect = ({ obj, checked }: TogglePayload) => {
+  const objIdx = selectedObjects.value.findIndex(o => o.itemId === obj.itemId)
 
     if (checked && objIdx === -1) {
         selectedObjects.value.push(obj)
@@ -58,15 +62,18 @@ const closeModal = () => {
 }
 
 const formatters = {
-  isCollection: (value) => {
+  isCollection: (value: unknown): string => {
     return value ? 'Collection' : 'Individual'
   },
 
-  borrows: (value) => {
+  borrows: (value: unknown): number | string => {
     if (!value) return ''
 
-    value = value.filter((borrow) => !borrow.isReturned)
-    return value.length //hyperlink to borrows
+    const borrows = Array.isArray(value)
+      ? value.filter((borrow) => !borrow?.isReturned)
+      : []
+
+    return borrows.length //hyperlink to borrows
 
   },
 }
@@ -84,7 +91,7 @@ const fieldLabels = {
 
 <template>
     <SearchBar @update:input="searchQuery = $event" placeholder="Search for an item..."/> 
-    <Table :data="filteredItems" exclude-fields="id" :editFunc :delFunc :selectedObjects="selectedObjects" @toggleSelect="handleToggleSelect" :formatters="formatters" :fieldLabels="fieldLabels" rowKey="itemId"/>
+  <Table :data="filteredItems" :exclude-fields="['id']" :editFunc :delFunc :selectedObjects="selectedObjects" @toggleSelect="handleToggleSelect" :formatters="formatters" :fieldLabels="fieldLabels" rowKey="itemId"/>
     <Modal title="Edit item" v-model:show="isEditModalOpen">
         <div style="display: flex; justify-content: center;">
             <UpdateItemForm :item="objectToEdit" @update="refreshList(); closeModal()" />

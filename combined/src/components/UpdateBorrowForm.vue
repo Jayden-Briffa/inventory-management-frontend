@@ -11,17 +11,27 @@
 </template>
 
 
-<script setup>
+<script setup lang="ts">
 // Should create standalone 'form' component from which to create borrow/item variants
 
 import { updateBorrow } from '@/apis/borrowMethods.js';
 import { reactive, watch } from 'vue';
 
-const emit = defineEmits(['update'])
+type BorrowUpdateInput = {
+  borrowId: number
+  email: string
+  borrowDate: string
+  expectedReturnDate: string
+  isReturned: boolean
+}
 
-const props = defineProps({
-    borrow: Object,
-})
+const emit = defineEmits<{
+  (e: 'update'): void
+}>()
+
+const props = defineProps<{
+  borrow?: Partial<BorrowUpdateInput>
+}>()
 
 const form = reactive({
     borrowEmail: '',
@@ -31,7 +41,11 @@ const form = reactive({
 })
 
 const updateBorrowFromForm = async () => {
-    let borrowDetails = {email: form.borrowEmail, borrowDate: form.borrowDate, expectedReturnDate: form.expectedReturnDate, isReturned: form.borrowIsReturned};
+    if (props.borrow?.borrowId == null) {
+      return
+    }
+
+    const borrowDetails = {email: form.borrowEmail, borrowDate: form.borrowDate, expectedReturnDate: form.expectedReturnDate, isReturned: form.borrowIsReturned};
     try {
       await updateBorrow(props.borrow.borrowId, borrowDetails)
       emit('update')
@@ -43,12 +57,12 @@ const updateBorrowFromForm = async () => {
 
 watch (
   () => props.borrow,
-  (newBorrow) => {
+  (newBorrow?: Partial<BorrowUpdateInput>) => {
     if (newBorrow) {
-      form.borrowEmail = newBorrow.email
-      form.borrowDate = newBorrow.borrowDate.slice(0,16) // Sliced to proper format for datetime-local input (removed seconds & microseconds). This also means borrows whose borrowDates have been updated will no longer specify to seconds/microseconds
-      form.expectedReturnDate = newBorrow.expectedReturnDate
-      form.borrowIsReturned = newBorrow.isReturned
+      form.borrowEmail = newBorrow.email ?? ''
+      form.borrowDate = newBorrow.borrowDate?.slice(0,16) ?? '' // Sliced to proper format for datetime-local input (removed seconds & microseconds). This also means borrows whose borrowDates have been updated will no longer specify to seconds/microseconds
+      form.expectedReturnDate = newBorrow.expectedReturnDate ?? ''
+      form.borrowIsReturned = newBorrow.isReturned ?? false
     }
   },
   { immediate: true } 

@@ -4,8 +4,20 @@ import { QrcodeStream } from 'vue-qrcode-reader'
 
 /*** detection handling ***/
 
+type CornerPoint = { x: number; y: number }
+type BoundingBox = { x: number; y: number; width: number; height: number }
+type DetectedCode = {
+  rawValue: string
+  cornerPoints: CornerPoint[]
+  boundingBox: BoundingBox
+}
+
+type TrackFunction = (detectedCodes: DetectedCode[], ctx: CanvasRenderingContext2D) => void
+
 const result = ref('')
-const emit = defineEmits(['confirmQrCode'])
+const emit = defineEmits<{
+  (e: 'confirmQrCode', value: string): void
+}>()
 const isJsonError = ref(false)
 
 const onClickConfirm = (currentResult: string) => {
@@ -20,7 +32,7 @@ const onClickConfirm = (currentResult: string) => {
   }
 }
 
-function onDetect(detectedCodes) {
+function onDetect(detectedCodes: DetectedCode[]) {
   console.log(detectedCodes)
   result.value = JSON.stringify(detectedCodes.map((code) => code.rawValue))
 }
@@ -35,7 +47,7 @@ async function onCameraReady() {
 
 /*** track functons ***/
 
-function paintOutline(detectedCodes, ctx) {
+function paintOutline(detectedCodes: DetectedCode[], ctx: CanvasRenderingContext2D) {
   for (const detectedCode of detectedCodes) {
     const [firstPoint, ...otherPoints] = detectedCode.cornerPoints
 
@@ -51,7 +63,7 @@ function paintOutline(detectedCodes, ctx) {
     ctx.stroke()
   }
 }
-function paintBoundingBox(detectedCodes, ctx) {
+function paintBoundingBox(detectedCodes: DetectedCode[], ctx: CanvasRenderingContext2D) {
   for (const detectedCode of detectedCodes) {
     const {
       boundingBox: { x, y, width, height }
@@ -62,7 +74,7 @@ function paintBoundingBox(detectedCodes, ctx) {
     ctx.strokeRect(x, y, width, height)
   }
 }
-function paintCenterText(detectedCodes, ctx) {
+function paintCenterText(detectedCodes: DetectedCode[], ctx: CanvasRenderingContext2D) {
   for (const detectedCode of detectedCodes) {
     const { boundingBox, rawValue } = detectedCode
 
@@ -88,13 +100,18 @@ const trackFunctionOptions = [
   { text: 'centered text', value: paintCenterText },
   { text: 'bounding box', value: paintBoundingBox }
 ]
-const trackFunctionSelected = ref(trackFunctionOptions[1])
+const trackFunctionSelected = ref<{ text: string; value?: TrackFunction }>(trackFunctionOptions[1])
 
 /*** error handling ***/
 
 const error = ref('')
 
-function onError(err) {
+function onError(err: unknown) {
+  if (!(err instanceof Error)) {
+    error.value = '[UnknownError]: unknown scanner error'
+    return
+  }
+
   error.value = `[${err.name}]: `
 
   if (err.name === 'NotAllowedError') {

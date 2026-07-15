@@ -3,7 +3,7 @@ import Modal from '@/components/Modal.vue';
 import { ref, computed } from 'vue';
 
 const props = defineProps<{
-  enterHandler: Function;
+  enterHandler: (enteredCode: string) => void;
   show: boolean;
 }>()
 
@@ -41,7 +41,7 @@ function popDigit(){
     }
 }
 
-function processEnteredCode(){
+function processEnteredCode(): string {
     const processedCode = codeIsEmpty.value ? '' : enteredCode.value
     resetCode()
 

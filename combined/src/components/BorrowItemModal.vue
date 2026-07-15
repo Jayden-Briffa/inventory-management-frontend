@@ -2,8 +2,13 @@
 import Modal from '@/components/Modal.vue';
 import { computed } from 'vue';
 
+type BorrowableItem = {
+    name: string
+    description: string
+}
+
 const props = defineProps<{
-    item: object,
+    item?: BorrowableItem,
     show: boolean
 }>()
 
@@ -21,7 +26,7 @@ const show = computed<boolean>({
 </script>
 
 <template>
-    <Modal v-if="item != undefined" id="borrow-item-modal" :title="'Borrow item: ' + item.name" v-model:show="show">
+    <Modal v-if="item" id="borrow-item-modal" :title="`Borrow item: ${item.name}`" v-model:show="show">
         <div class="mt-4" />
 
         <div class="flex flex-col items-center w-1/2 justify-self-center">
