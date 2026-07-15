@@ -1,6 +1,6 @@
 # Frontend Dependencies
 
-This document explains the frontend dependency stack used in the combined app and how each dependency contributes to development and runtime behavior.
+This document explains the frontend dependency stack used in the inventory management frontend and how each dependency contributes to development and runtime behavior.
 
 ## Runtime dependencies
 
@@ -65,7 +65,7 @@ These packages support build, testing, linting, formatting, and TypeScript autho
 
 ## How to run with dependencies
 
-From the `combined` directory:
+From the project root:
 
 1. Install dependencies:
    - `npm install`
@@ -83,9 +83,10 @@ Optional quality commands:
 
 ## Current component status
 
-The current combined app is scaffold-level and only includes:
+The current application entrypoint is:
 
 - `src/main.ts`: Vue app bootstrap and mount.
-- `src/App.vue`: Placeholder root component.
+- `src/App.vue`: Root component.
 
-As features from the source branches are merged into `combined/src/components`, update this document to map major components to their dependency usage (for example, PrimeVue widgets, Pinia stores, or QR scanner integration).
+The frontend also includes reusable and feature-level UI components in `src/components`.
+As the UI surface expands, keep this document up to date with dependency usage by major feature areas (for example, PrimeVue widgets, Pinia stores, and QR scanner integration).
