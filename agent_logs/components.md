@@ -31,14 +31,16 @@ Decision rationale:
 
 ## 2026-07-15 (homepage creation)
 
-- Replaced placeholder root app with a router-based shell in `combined/src/App.vue`.
+- Replaced placeholder root app with a minimal router-based shell in `combined/src/App.vue`.
 - Added route wiring in `combined/src/main.ts` and `combined/src/router/index.ts`.
 - Added views in `combined/src/views`:
   - `HomeView.vue` (email entry, recent borrowers table, QR scan entrypoint)
   - `BorrowView.vue` (email-context borrow flow with QR modal)
   - `AdminView.vue` (borrows/items toggle)
+- Updated `HomeView.vue` email input to submit via form (`@submit.prevent`) so pressing Enter routes directly to borrow flow.
+- Kept shell content-first with no Home/Borrow top navigation links.
 
 Decision rationale:
-- Chose George/Yara app-shell + route structure because it is the most complete navigation baseline.
+- Chose George/Yara route structure because it is the most complete navigation baseline.
 - Chose George Home/Borrow flow because it includes QR scan confirmation and handoff to `QrBorrow`, making it functionally richer than Yara and significantly more complete than Jayden's placeholder home.
 - Chose Yara's admin table-toggle behavior over George's placeholder admin page because it is feature-complete and integrates existing merged table components.

@@ -12,6 +12,6 @@
 ## 2026-07-15 (homepage docs)
 
 - Updated `combined/docs/components.md` with application-level navigation/view documentation:
-  - Root app shell responsibilities
+  - Root app shell responsibilities (content-first routed shell)
   - Router responsibilities
   - Home, Borrow, and Admin view roles

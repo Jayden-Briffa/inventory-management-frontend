@@ -53,7 +53,7 @@ const items = ref<Item[]>([
   },
 ])
 
-const borrows = computed<Borrow[]>(() => items.value.flatMap((item) => item.borrows ?? []))
+const borrows = computed<Borrow[]>(() => items.value.flatMap((item: Item) => item.borrows ?? []))
 
 const recentBorrows = computed<Borrow[]>(() => {
   const sorted = [...borrows.value].sort((a, b) => {
@@ -145,7 +145,7 @@ const onConfirmQrCode = (qrCode: string) => {
     <section class="hero">
       <h1 id="home-title" data-testid="home-title">Welcome to Inventory Management</h1>
 
-      <div class="form">
+      <form class="form" @submit.prevent="confirmEmail">
         <input
           v-model="email"
           class="input"
@@ -158,8 +158,8 @@ const onConfirmQrCode = (qrCode: string) => {
         <datalist id="email-suggestions">
           <option v-for="suggestion in emailSuggestions" :key="suggestion" :value="suggestion" />
         </datalist>
-        <button class="btn" type="button" @click="confirmEmail">Continue</button>
-      </div>
+        <button class="btn" type="submit">Continue</button>
+      </form>
     </section>
 
     <section>
