@@ -29,3 +29,11 @@ These modules are required because several components depend on `@/apis/*` and `
 
 - Components are available in `src/components` and can be integrated into application routes/views as needed.
 - API methods expect `VITE_INVENTORY_API_BASE_URL` to be configured.
+
+## Application views and navigation
+
+- `src/App.vue`: Root shell with navigation links and `RouterView` outlet.
+- `src/router/index.ts`: Route map for homepage (`/`), borrow flow (`/borrow`), and admin tables (`/admin`).
+- `src/views/HomeView.vue`: Homepage with email entry, recent borrower suggestions, and QR scan entrypoint.
+- `src/views/BorrowView.vue`: Borrow page that receives selected email and handles scan-to-borrow flow.
+- `src/views/AdminView.vue`: Admin page with table toggle between borrows and items.
