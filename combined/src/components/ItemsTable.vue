@@ -3,7 +3,7 @@ import Table from '@/components/Table.vue';
 import Modal from '@/components/Modal.vue';
 import SearchBar from './SearchBar.vue';
 import { onMounted, ref, computed } from 'vue';
-import { getItems, deleteItem } from '@/apis/itemMethods.js';
+import { getItems, deleteItem } from '@/apis/itemMethods';
 import UpdateItemForm from '@/components/UpdateItemForm.vue';
 import type { Item } from '@/services/inventory';
 
