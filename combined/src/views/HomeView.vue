@@ -177,9 +177,10 @@ const onConfirmQrCode = (qrCode: string) => {
       <button
         class="btn"
         type="button"
-        @click="
+        @click="() => {
           isQrModalVisible = true
           isQrScannerVisible = true
+        }
         "
       >
         Open QR Scanner
